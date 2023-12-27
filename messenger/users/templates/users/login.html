@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/reg.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+<h1>Авторизация</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <label for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <br>
+    <button type="submit" class="button">Войти</button>
+    <br><br>
+    <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+    <br><br>
+    <a href="{% url 'users:register' %}">Регистрация</a>
+</form>
+    </div>
+{% endblock %}

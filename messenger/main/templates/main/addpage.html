@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{title_page}}
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/reg.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+<div class="container">
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+
+    {% for f in form %}
+      {% if f.name == 'tags' %}
+
+          <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>
+          {{ f }}
+          <small>Введите теги через запятую (например, тег1, тег2)</small>
+
+    {% elif f.name == 'photo' %}
+    <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
+    <br><br>
+  {% else %}
+        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
+    <br><br>
+      {% endif %}
+      <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <button type="submit" class="button">Отправить</button>
+  </form>
+  </div>
+{% endblock %}

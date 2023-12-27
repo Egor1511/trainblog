@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+{% endblock %}
+{% block content %}
+
+
+<form method="post" class="form-profile" enctype="multipart/form-data">
+    <h1>Профиль</h1>
+    {% csrf_token %}
+
+    <div class="ava">
+        {% if user.photo %}
+        <p><img src="{{ user.photo.url }}">
+            {% else %}
+        <p><img src="{{ default_image }}">
+            {% endif %}
+    </div>
+    {% with total_followers=user.followers.count %}
+    <span class="count">
+ <span class="total">{{ total_followers }}</span>
+ follower{{ total_followers|pluralize }}
+ </span>
+    <a href="#" data-id="{{ user.id }}" data-action="{% if user in user.followers.all %}un{% endif %}follow"
+       class="follow button">
+    </a>
+    {% endwith %}
+
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+
+    <p>
+        <button type="submit">Сохранить</button>
+    </p>
+</form>
+
+<hr>
+<p><a href="{% url 'users:password_change' %}">Сменить пароль</a></p>
+<a href="{% url 'users:logout' %}">Выйти</a>
+
+{% endblock %}
+{% block domready %}
+var const = '{% url "users:user_follow" %}';
+var options = {
+method: 'POST',
+headers: {'X-CSRFToken': csrftoken},
+mode: 'same-origin'
+}
+document.querySelector('a.follow').addEventListener('click', function(e){
+e.preventDefault();
+var followButton = this;
+
+var formData = new FormData();
+formData.append('id', followButton.dataset.id);
+formData.append('action', followButton.dataset.action);
+options['body'] = formData;
+
+fetch(url, options).then(response => response.json()).then(data => {
+if (data['status'] === 'ok')
+{
+var previousAction = followButton.dataset.action;
+
+var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+followButton.dataset.action = action;
+followButton.innerHTML = action;
+
+var followerCount = document.querySelector('span.count .total');
+var totalFollowers = parseInt(followerCount.innerHTML);
+followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 :
+totalFollowers – 1;
+}
+})
+});
+
+{% endblock %}

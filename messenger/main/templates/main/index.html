@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main/css/first.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollTrigger/1.0.6/ScrollTrigger.min.js" defer></script>
+<script type="text/javascript" src="{% static 'main/js/ScrollSmoother.min.js' %}" defer></script>
+<script type="text/javascript" src="{% static 'main/js/app.js' %}" defer></script>
+{% endblock %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+	<div class="wrapper">
+		<div class="content">
+			<header class="main-header" style="background-image: url({% static 'main/images/ground.png' %})">
+				<div class="layers">
+					<div class="layer__header">
+						<div class="layers__caption">Представляю к вашему вниманию</div>
+						<div class="layers__title">Мое портфолио</div>
+					</div>
+					<div class="layer layers__base" style="background-image: url({% static 'main/images/layer-base.png' %})"></div>
+					<div class="layer layers__middle" style="background-image: url({% static 'main/images/layer-middle.png' %});"></div>
+					<div class="layer layers__front" style="background-image: url({% static 'main/images/layer-front.png' %});"></div>
+				</div>
+			</header>
+			<article class="main-article" style="background-image: url({% static 'main/images/dungeon.jpg' %});">
+				<div class="main-article__content">
+					<h2 class="main-article__header">Это просто попытка <br> реализовать свой миниблог</h2>
+					<p class="main-article__paragraph">Что тут написать  </p>
+					<p class="main-article__paragraph">я не знаю</p>
+					<div class="copy"></div>
+				</div>
+			</article>
+		</div>
+	</div>
+{% endblock %}

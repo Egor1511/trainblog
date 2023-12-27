@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Блог{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<a href="{% url 'add_page' %}" class="corner-image">
+    <img src="{% static 'main/images/add.svg' %}" alt="Добавить статью" />
+</a>
+{% endif %}
+    <div class="container">
+      {% for p in posts %}
+
+        <div class="card" onclick="redirectToPage('{{ p.get_absolute_url }}')">
+          <div class="card-header">
+            {% if p.photo %}
+            <img src="{{ p.photo.url }}" alt="Фото блога" />
+            {% else %}
+            <img src="{% static 'main/images/fun.jpg' %}" alt="Фото блога" />
+            {% endif %}
+
+          </div>
+          <div class="card-body">
+            <a href="{% url 'category' category_slug=p.category.slug %}"><span class="tag tag-teal">{{ p.category.name }}</span></a>
+            <h4>
+              {{p.title}}
+            </h4>
+            <p>
+              {% autoescape off %}
+              {{p.content|linebreaks|truncatewords:10}}
+              {% endautoescape %}
+            </p>
+            <a href="{% url 'users:user_detail' username=p.author.username %}">
+            <div class="user">
+              {% if user.photo %}
+              <img src="{{ p.author.photo.url }}" alt="Фото профиля"/>
+              {% else %}
+              <img src="{{ default_image }}" alt="Фото профиля"/>
+              {% endif %}
+              <div class="user-info">
+                <h5>{{ p.author.username }}</h5>
+                <small>{{ p.time_update|naturalday }}</small>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

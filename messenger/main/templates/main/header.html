@@ -1,0 +1,21 @@
+{% load static %}
+
+<header class="header">
+    <div class="all">
+        <div class="right" style="background-image: url({% static 'main/images/home.svg' %});" onclick="redirectToPage('{% url 'home' %}')">
+          </div>
+        <div class="lefter" style="background-image: url({% static 'main/images/sms.svg' %});" onclick="redirectToPage('{% url 'blog' %}')">
+        </div>
+        {% if user.is_authenticated %}
+        <div class="left" style="background-image: url({% static 'main/images/person.svg' %});" onclick="redirectToPage('{% url 'users:profile' %}')">
+        </div>
+        {% else %}
+        <div class="left" style="background-image: url({% static 'main/images/person.svg' %});" onclick="redirectToPage('{% url 'users:login' %}')">
+        </div>
+        {% endif %}
+        <div class="center" style="background-image: url({% static 'main/images/menu.svg' %});">
+          <div class="explainer"></div>
+          </div>
+        </div>
+        </div>
+    </header>
